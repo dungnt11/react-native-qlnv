@@ -4,12 +4,16 @@ import {
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity
 } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faListAlt, faComment, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { Todo } from '../src/components/Todo';
 
 const Dashboard = () => {
+  const [tabActive, setTabActive] = React.useState(0);
+  const tabs = [faListAlt, faComment, faUserFriends];
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -33,17 +37,17 @@ const Dashboard = () => {
         </View>
 
         <View style={styles.operator}>
-          <View style={[styles.operatorItem, styles.active]}>
-            <FontAwesomeIcon icon={faListAlt} color="#0064FE" />
-          </View>
-
-          <View style={styles.operatorItem}>
-            <FontAwesomeIcon icon={faComment} color="#0064FE" />
-          </View>
-
-          <View style={styles.operatorItem}>
-            <FontAwesomeIcon icon={faUserFriends} color="#0064FE" />
-          </View>
+          { tabs.map((tab, ind) => (
+            <TouchableOpacity
+              key={ind}
+              onPress={() => setTabActive(ind)}
+              activeOpacity={1}
+            >
+              <View style={[styles.operatorItem, tabActive === ind ? styles.active : undefined]}>
+                <FontAwesomeIcon icon={tab} color={tabActive === ind ? 'white' : '#0064FE'} />
+              </View>
+          </TouchableOpacity>
+          )) }
         </View>
       </View>
 
@@ -113,6 +117,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  active: {
+    backgroundColor: '#0064FE',
+  }
 })
 
 export { Dashboard };
